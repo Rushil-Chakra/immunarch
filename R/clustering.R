@@ -4,7 +4,6 @@
 #'
 #' @aliases immunr_hclust immunr_kmeans immunr_dbscan
 #'
-#' @importFrom fpc dbscan
 #' @importFrom factoextra hcut fviz_nbclust
 #' @importFrom stats kmeans as.dist cmdscale dist
 #'
@@ -159,6 +158,7 @@ dbscan <- function (data, eps, MinPts = 5, scale = FALSE, method = c("hybrid",
   class(out) <- "dbscan"
   out
 }
+
 
 immunr_hclust <- function(.data, .k = 2, .k.max = nrow(.data) - 1, .method = "complete", .dist = TRUE) {
   if (.dist) {
