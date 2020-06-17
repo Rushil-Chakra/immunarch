@@ -70,6 +70,10 @@ repExplore <- function(.data, .method = c("volume", "count", "len", "clones"), .
   }
 
   if (.method[1] == "volume") {
+    if (missing(.col)) { 
+      .col <- "nt+v+j"
+    }
+    seq_col <- process_col_argument(.col)
     res <- add_class(
       data.frame(
         Sample = names(.data),
@@ -78,9 +82,9 @@ repExplore <- function(.data, .method = c("volume", "count", "len", "clones"), .
             df <- df %>% lazy_dt()
           }
           df %>%
-            select(IMMCOL$count) %>%
+            group_by_at(seq_col) %>%
             collect(n = Inf) %>%
-            nrow()
+            n_groups()
         }), stringsAsFactors = FALSE
       ),
       "immunr_exp_vol"
