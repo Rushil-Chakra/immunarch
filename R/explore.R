@@ -82,7 +82,7 @@ repExplore <- function(.data, .method = c("volume", "count", "len", "clones"), .
             df <- df %>% lazy_dt()
           }
           df %>%
-            group_by_at(seq_col) %>%
+            group_by(across(c(seq_col))) %>%
             collect(n = Inf) %>%
             n_groups()
         }), stringsAsFactors = FALSE
@@ -105,7 +105,7 @@ repExplore <- function(.data, .method = c("volume", "count", "len", "clones"), .
     res <- do.call(rbind, res)
     res <- add_class(res, "immunr_exp_count")
   } else if (.method[1] %in% c("len", "lens", "length")) {
-    seq_col <- switch(.col[1], nt = IMMCOL$cdr3nt, aa = IMMCOL$cdr3aa, stop("Unknown sequence column: ", .col, ". Please provide either 'nt' or 'aa'"))
+    seq_col <- process_col_argument(.col)
     res <- lapply(.data, function(df) {
       if (has_class(df, "data.table")) {
         df <- df %>% lazy_dt()
